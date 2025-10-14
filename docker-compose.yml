@@ -1,8 +1,6 @@
 services:
   backend-api:
-    build:
-      context: .
-      dockerfile: Docker/Dockerfile
+    image: ghcr.io/santimakci/dssd-api-cloud:main
     restart: always
     command: npm run start:debug
     container_name: backend-api
