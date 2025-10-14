@@ -60,10 +60,10 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: 'dist/'
-          target: '/home/ubuntu/ssd-api-cloud/'
+          target: '/home/ubuntu/dssd-api-cloud/'
           strip_components: 0
 
-      - name: Install dependencies and restart PM2
+      - name: Build and restart Docker containers
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -71,5 +71,5 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ubuntu/dssd-api-cloud
-            docker-compose down 
-            docker-compose up -d --build
+            docker compose down 
+            docker compose up -d --build
