@@ -12,7 +12,7 @@ export class CreateUserDto {
   lastName: string;
   @Expose()
   @IsNotEmpty()
-  document: string;
+  password: string;
   @Expose()
   @IsNotEmpty()
   role: number[];

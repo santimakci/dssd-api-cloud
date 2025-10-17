@@ -6,6 +6,7 @@ import { User } from 'src/entities/user.entity';
 import { UserRole } from 'src/common/enums/user-role.enum';
 import { ConfigService } from '@nestjs/config';
 import * as argon2 from 'argon2';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,7 @@ export class AuthService {
   async login(email: string, password: string) {
     const user = await this.findUserByEmailWithPassword(email);
     // const isMatch = await bcrypt.compare(password, user.password);
-    const isMatch = await argon2.verify(user.password, password);
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       throw new BadRequestException('Invalid password or user');
