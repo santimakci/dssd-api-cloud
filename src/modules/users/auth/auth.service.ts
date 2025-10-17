@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { User } from 'src/entities/user.entity';
 import { UserRole } from 'src/common/enums/user-role.enum';
 import { ConfigService } from '@nestjs/config';
-import * as argon2 from 'argon2';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -19,34 +18,16 @@ export class AuthService {
 
   async login(email: string, password: string) {
     const user = await this.findUserByEmailWithPassword(email);
-    // const isMatch = await bcrypt.compare(password, user.password);
-    const isMatch = await bcrypt.compare(password, user.password);
 
-    if (!isMatch) {
-      throw new BadRequestException('Invalid password or user');
-    }
     if (!user) {
       throw new BadRequestException('User not found');
     }
-    if (!user.roles.includes(UserRole.USER)) {
-      throw new BadRequestException('User is not app user');
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      throw new BadRequestException('Invalid password or user');
     }
 
     const token = this.getAppToken(user);
-    const result = this.sendToken(user, token);
-    return result;
-  }
-
-  async loginAdmin(email: string, password: string) {
-    const user = await this.findUserByEmailWithPassword(email);
-    if (!user) throw new BadRequestException('User not found');
-    // const isMatch = await bcrypt.compare(password, user.password);
-    const isMatch = await argon2.verify(user.password, password);
-    if (!isMatch) throw new BadRequestException('Invalid password or user');
-    if (!user.roles.includes(UserRole.ADMIN)) {
-      throw new BadRequestException('User is not admin');
-    }
-    const token = this.getAdminToken(user);
     const result = this.sendToken(user, token);
     return result;
   }
