@@ -32,6 +32,20 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api-docs', app, document);
 
+  // Loggins incoming requests
+  app.use((req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+      if (!req.path.includes('ping')) {
+        console.log(
+          `🌐 ${req.method} ${req.path} ${res.statusCode} ${
+            Date.now() - start
+          }ms`,
+        );
+      }
+    });
+    next();
+  });
   await app.listen(port);
   console.log(`API running on port: ${port}`);
 }
