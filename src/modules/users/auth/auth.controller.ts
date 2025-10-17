@@ -7,6 +7,6 @@ export class AuthController {
 
   @Post('admin/login')
   loginAdmin(@Body() body: { email: string; password: string }) {
-    return this.authService.loginAdmin(body.email, body.password);
+    return this.authService.login(body.email, body.password);
   }
 }
