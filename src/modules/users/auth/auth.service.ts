@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { User } from 'src/entities/user.entity';
-import { UserRole } from 'src/common/enums/user-role.enum';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 
@@ -27,7 +26,7 @@ export class AuthService {
       throw new BadRequestException('Invalid password or user');
     }
 
-    const token = this.getAppToken(user);
+    const token = this.getAdminToken(user);
     const result = this.sendToken(user, token);
     return result;
   }
@@ -38,16 +37,6 @@ export class AuthService {
       where: {
         email,
       },
-    });
-  }
-
-  getAppToken(user: User) {
-    const payload = {
-      email: user.email,
-      id: user.id,
-    };
-    return this.jwtService.sign(payload, {
-      secret: process.env.APP_JWT_SECRET,
     });
   }
 

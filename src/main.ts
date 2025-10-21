@@ -1,14 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import {
-  DocumentBuilder,
-  SwaggerDocumentOptions,
-  SwaggerModule,
-} from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { VersioningType } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const config = app.get(ConfigService);
+
+  const hostServer = config.get<string>('URL_SERVER');
 
   app.setGlobalPrefix('api');
   app.enableVersioning({
@@ -25,8 +25,18 @@ async function bootstrap() {
     .setTitle('DSSD API')
     .setDescription('DSSD API')
     .setVersion('1.0')
-    .addServer('http://localhost:3000/', 'Local environment')
-    .addBearerAuth()
+    .addServer(`${hostServer}/`, 'Local environment')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'jwt',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

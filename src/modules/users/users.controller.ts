@@ -57,7 +57,7 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  @Post(':id/deactivate')
+  /*   @Post(':id/deactivate')
   deactivate(@Param('id') id: string) {
     return this.usersService.deactivate(id);
   }
@@ -65,7 +65,7 @@ export class UsersController {
   @Post(':id/activate')
   activate(@Param('id') id: string) {
     return this.usersService.activate(id);
-  }
+  } */
 
   @Post(':id/password')
   changePassword(
