@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { config as typeOrmConfig } from './config/db.config';
 import { AuthModule } from './modules/users/auth/auth.module';
 import { TasksModule } from './modules/tasks/tasks.module';
+import { ProjectsModule } from './modules/projects/projects.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TasksModule } from './modules/tasks/tasks.module';
     //  UsersModule,
     AuthModule,
     TasksModule,
+    ProjectsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -18,6 +18,10 @@ export class TasksRepository {
     return this.tasksRepository.save(data);
   }
 
+  findOne(id: string) {
+    return this.tasksRepository.findOne({ where: { id } });
+  }
+
   findAllPagination(page: number, limit: number, search: string) {
     const query = this.tasksRepository
       .createQueryBuilder('task')
@@ -35,5 +39,12 @@ export class TasksRepository {
     }
 
     return query.getManyAndCount();
+  }
+
+  findByProjectId(projectId: string) {
+    return this.tasksRepository
+      .createQueryBuilder('task')
+      .where('task.projectId = :projectId', { projectId })
+      .getMany();
   }
 }

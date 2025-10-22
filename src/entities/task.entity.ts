@@ -1,5 +1,7 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { Base } from './base.entity';
+import { Project } from './projects.entity';
+import { Collaborator } from './collaborator.entity';
 @Entity({
   name: 'tasks',
 })
@@ -11,15 +13,24 @@ export class Task extends Base {
   description: string;
 
   @Column()
-  projectName: string;
+  projectId: string;
 
-  @Column()
-  ongName: string;
+  @ManyToOne(() => Project, (project) => project.tasks)
+  project: Project;
+
+  @Column({
+    nullable: true,
+  })
+  collaboratorId: string;
+
+  @OneToOne(() => Collaborator, (collaborator) => collaborator.task)
+  @JoinColumn({ name: 'collaboratorId' })
+  collaborator: Collaborator;
 
   @Column({
     default: false,
   })
-  isTaken: boolean;
+  isFinished: boolean;
 
   @Column({
     type: 'date',
