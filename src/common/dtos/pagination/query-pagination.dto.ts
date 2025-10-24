@@ -1,7 +1,12 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNumber, IsOptional } from 'class-validator';
 
 export class QueryPaginationDto {
+  @ApiProperty({
+    description: 'Project ID to filter tasks (Optional)',
+  })
+  projectId: string;
+
   @ApiPropertyOptional({
     description: 'Page number (Optional)',
   })

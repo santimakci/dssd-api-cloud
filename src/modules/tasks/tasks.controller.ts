@@ -13,6 +13,7 @@ import { QueryPaginationDto } from 'src/common/dtos/pagination/query-pagination.
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { TakeTaskDto } from './dto/take-task.dto';
+import { CreateTaskDto } from './dto/create-task.dto';
 
 @ApiBearerAuth('jwt')
 @ApiTags('Tasks')
@@ -20,6 +21,12 @@ import { TakeTaskDto } from './dto/take-task.dto';
 @UseGuards(AuthenticationGuard)
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
+
+  @ApiOperation({ summary: 'Crear tarea' })
+  @Post()
+  create(@Body() createTaskDto: CreateTaskDto) {
+    return this.tasksService.create(createTaskDto);
+  }
 
   @ApiOperation({ summary: 'Listar todas las tareas paginadas' })
   @Get()

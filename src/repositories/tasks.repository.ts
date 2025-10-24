@@ -22,10 +22,16 @@ export class TasksRepository {
     return this.tasksRepository.findOne({ where: { id } });
   }
 
-  findAllPagination(page: number, limit: number, search: string) {
+  findAllPagination(
+    page: number,
+    limit: number,
+    search: string,
+    projectId: string,
+  ) {
     const query = this.tasksRepository
       .createQueryBuilder('task')
       .orderBy('task.createdAt', 'DESC')
+      .where('task.projectId = :projectId', { projectId })
       .skip(page * limit)
       .take(limit);
 

@@ -3,6 +3,7 @@ import { QueryPaginationDto } from 'src/common/dtos/pagination/query-pagination.
 import { TasksRepository } from 'src/repositories';
 import { TakeTaskDto } from './dto/take-task.dto';
 import { CollaboratorRepository } from 'src/repositories/collaborator.repository';
+import { CreateTaskDto } from './dto/create-task.dto';
 
 @Injectable()
 export class TasksService {
@@ -11,12 +12,18 @@ export class TasksService {
     private readonly collaboratorsRepository: CollaboratorRepository,
   ) {}
 
+  create(createTaskDto: CreateTaskDto) {
+    return this.tasksRepository.save(createTaskDto);
+  }
+
   async findPaginated(query: QueryPaginationDto) {
-    const { search = null, page = 0, limit = 10 } = query;
+    const { search = null, page = 0, limit = 10, projectId = null } = query;
+    if (!projectId) throw new NotFoundException('Project ID is required');
     const [tasks, total] = await this.tasksRepository.findAllPagination(
       page,
       limit,
       search,
+      projectId,
     );
     return {
       data: tasks,
