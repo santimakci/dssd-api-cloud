@@ -22,6 +22,12 @@ import { CreateTaskDto } from './dto/create-task.dto';
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
+  @ApiOperation({ summary: 'Crear tareas from Bonita' })
+  @Post('/multiple')
+  createMultipleTasks(@Body() body: { tasks: string; projectId: string }) {
+    return this.tasksService.createMultipleTasks(body);
+  }
+
   @ApiOperation({ summary: 'Crear tarea' })
   @Post()
   create(@Body() createTaskDto: CreateTaskDto) {

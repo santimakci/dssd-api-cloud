@@ -16,6 +16,22 @@ export class TasksService {
     return this.tasksRepository.save(createTaskDto);
   }
 
+  async createMultipleTasks(body: { tasks: string; projectId: string }) {
+    try {
+      const tasks = JSON.parse(body.tasks);
+      for (const task of tasks) {
+        await this.tasksRepository.save({
+          ...task,
+          projectId: body.projectId,
+        });
+      }
+      return { message: 'Tasks successfully created' };
+    } catch (error) {
+      console.log(error);
+      throw new NotFoundException('Invalid tasks format');
+    }
+  }
+
   async findPaginated(query: QueryPaginationDto) {
     const { search = null, page = 0, limit = 10, projectId = null } = query;
     if (!projectId) throw new NotFoundException('Project ID is required');
