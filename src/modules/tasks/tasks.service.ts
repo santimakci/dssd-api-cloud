@@ -78,8 +78,8 @@ export class TasksService {
     return { message: 'Task successfully finished' };
   }
 
-  countPendingTasks(projectId: string) {
-    const total = this.tasksRepository.countPendingTasks(projectId);
+  async countPendingTasks(projectId: string) {
+    const total = await this.tasksRepository.countPendingTasks(projectId);
     return { total };
   }
 }
