@@ -77,4 +77,9 @@ export class TasksService {
     await this.tasksRepository.save(task);
     return { message: 'Task successfully finished' };
   }
+
+  countPendingTasks(projectId: string) {
+    const total = this.tasksRepository.countPendingTasks(projectId);
+    return { total };
+  }
 }
