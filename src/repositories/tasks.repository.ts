@@ -22,6 +22,16 @@ export class TasksRepository {
     return this.tasksRepository.findOne({ where: { id } });
   }
 
+  findByCollaboratorEmail(email: string, page: number, limit: number) {
+    return this.tasksRepository
+      .createQueryBuilder('task')
+      .leftJoinAndSelect('task.collaborator', 'collaborator')
+      .where('collaborator.email = :email', { email })
+      .skip(page * limit)
+      .take(limit)
+      .getManyAndCount();
+  }
+
   findAllPagination(
     page: number,
     limit: number,

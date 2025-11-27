@@ -4,6 +4,7 @@ import { TasksRepository } from 'src/repositories';
 import { TakeTaskDto } from './dto/take-task.dto';
 import { CollaboratorRepository } from 'src/repositories/collaborator.repository';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { QueryPaginationUserDto } from './dto/query-pagination-user.dto';
 
 @Injectable()
 export class TasksService {
@@ -30,6 +31,23 @@ export class TasksService {
       console.log(error);
       throw new NotFoundException('Invalid tasks format');
     }
+  }
+
+  async findPaginatedByCollaborator(query: QueryPaginationUserDto) {
+    const { email = null, page = 0, limit = 10 } = query;
+    if (!email) throw new NotFoundException('Email is required');
+
+    const [tasks, total] = await this.tasksRepository.findByCollaboratorEmail(
+      email,
+      page,
+      limit,
+    );
+    return {
+      data: tasks,
+      total,
+      page,
+      limit,
+    };
   }
 
   async findPaginated(query: QueryPaginationDto) {

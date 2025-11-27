@@ -1,29 +1,9 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsOptional } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { QueryPaginationBaseDto } from './query-pagination-base.dto';
 
-export class QueryPaginationDto {
+export class QueryPaginationDto extends QueryPaginationBaseDto {
   @ApiProperty({
     description: 'Project ID to filter tasks (Optional)',
   })
   projectId: string;
-
-  @ApiPropertyOptional({
-    description: 'Page number (Optional)',
-  })
-  @IsNumber()
-  @IsOptional()
-  page: number;
-
-  @ApiPropertyOptional({
-    description: 'Number of items per page (Optional)',
-  })
-  @IsNumber()
-  @IsOptional()
-  limit: number;
-
-  @ApiPropertyOptional({
-    description: 'Search term (Optional)',
-  })
-  @IsOptional()
-  search?: string;
 }

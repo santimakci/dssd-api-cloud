@@ -14,6 +14,7 @@ import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { TakeTaskDto } from './dto/take-task.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { QueryPaginationUserDto } from './dto/query-pagination-user.dto';
 
 @ApiBearerAuth('jwt')
 @ApiTags('Tasks')
@@ -38,6 +39,12 @@ export class TasksController {
   @Get()
   findPaginated(@Query() query: QueryPaginationDto) {
     return this.tasksService.findPaginated(query);
+  }
+
+  @ApiOperation({ summary: 'Listar todas las tareas paginadas' })
+  @Get('collaborator')
+  findPaginatedByCollaborator(@Query() query: QueryPaginationUserDto) {
+    return this.tasksService.findPaginatedByCollaborator(query);
   }
 
   @ApiOperation({
