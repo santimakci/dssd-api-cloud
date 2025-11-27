@@ -72,11 +72,30 @@ export class TasksRepository {
       .getCount();
   }
 
-  countUntakenTasks(projectId: string) {
+  countPendingTaken() {
     return this.tasksRepository
       .createQueryBuilder('task')
-      .where('task.projectId = :projectId', { projectId })
-      .andWhere('task.collaboratorId IS NULL')
+      .where('task.collaboratorId IS NOT NULL')
+      .andWhere('task.isFinished IS false')
       .getCount();
+  }
+
+  countFinishedTasks() {
+    return this.tasksRepository
+      .createQueryBuilder('task')
+      .andWhere('task.isFinished IS true')
+      .getCount();
+  }
+
+  countUntakenTasks(projectId: string) {
+    const query = this.tasksRepository
+      .createQueryBuilder('task')
+      .where('task.collaboratorId IS NULL');
+
+    if (projectId) {
+      query.andWhere('task.projectId = :projectId', { projectId });
+    }
+
+    return query.getCount();
   }
 }

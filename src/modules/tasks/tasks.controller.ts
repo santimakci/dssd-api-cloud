@@ -87,4 +87,12 @@ export class TasksController {
   countUntakenTasks(@Query() query: { projectId: string }) {
     return this.tasksService.countUntakenTasks(query.projectId);
   }
+
+  @ApiOperation({
+    summary: 'Marcar una tarea como finalizada',
+  })
+  @Post('kpis')
+  getInfoAboutTasks() {
+    return this.tasksService.getInfoAboutTasks();
+  }
 }
