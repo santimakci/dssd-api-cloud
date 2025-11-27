@@ -72,4 +72,12 @@ export class TasksController {
   countPendingTaks(@Query() query: { projectId: string }) {
     return this.tasksService.countPendingTasks(query.projectId);
   }
+
+  @ApiOperation({
+    summary: 'Marcar una tarea como finalizada',
+  })
+  @Post('countUntaken')
+  countUntakenTasks(@Query() query: { projectId: string }) {
+    return this.tasksService.countUntakenTasks(query.projectId);
+  }
 }
