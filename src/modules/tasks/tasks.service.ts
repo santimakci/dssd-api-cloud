@@ -82,4 +82,9 @@ export class TasksService {
     const total = await this.tasksRepository.countPendingTasks(projectId);
     return { total };
   }
+
+  async countUntakenTasks(projectId: string) {
+    const total = await this.tasksRepository.countUntakenTasks(projectId);
+    return { total };
+  }
 }

@@ -61,4 +61,12 @@ export class TasksRepository {
       .andWhere('task.isFinished IS false')
       .getCount();
   }
+
+  countUntakenTasks(projectId: string) {
+    return this.tasksRepository
+      .createQueryBuilder('task')
+      .where('task.projectId = :projectId', { projectId })
+      .andWhere('task.collaboratorId IS NULL')
+      .getCount();
+  }
 }
